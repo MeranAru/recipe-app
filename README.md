@@ -1,2 +1,2 @@
 # recipe-app
- 
+A Web App that is build with Python using the framework from Django. An admin feature allows the access to a dashboard where there are various preformances like create, read, update and delete(CRUD). Users that use this web app are able to create recipe, search for a recipe and search for a specific ingredient in a recipe.x

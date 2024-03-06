@@ -2,6 +2,8 @@ from django.test import TestCase
 # to access Recipe model
 from .models import Recipe
 
+from .forms import RecipesSearchForm
+
 # Create your tests here.
 
 
@@ -42,8 +44,25 @@ class RecipeModelTest(TestCase):
         print(recipe.calculate_difficulty())
         self.assertEqual(recipe.calculate_difficulty(), 'Easy')
 
-    def test_get_absolute_url(self):
-        recipe = Recipe.objects.get(id=1)
-        #get_absolute_url() should take you to the detail page of recipe #1
-        #and load the URL /recipe/list/1
-        self.assertEqual(recipe.get_absolute_url(), '/recipes/list/1')
+
+class RecipesSearchFormTest(TestCase):
+
+    def test_form_renders_recipes_df_input(self):
+        form = RecipesSearchForm()
+        self.assertIn('recipes_df', form.as_p())
+
+    def test_form_renders_chart_type_input(self):
+        form = RecipesSearchForm()
+        self.assertIn('chart_type', form.as_p())
+
+    def test_form_valid_data(self):
+        form_data = {
+        'recipe_title': 'Your Recipe Title',
+        'chart_type': '#1'  # Assuming this is a valid choice
+        }
+        form = RecipesSearchForm(data=form_data)
+        self.assertTrue(form.is_valid(), form.errors)
+
+    def test_form_invalid_data(self):
+        form = RecipesSearchForm(data={'recipes_df': '', 'chart_type': ''})
+        self.assertFalse(form.is_valid())

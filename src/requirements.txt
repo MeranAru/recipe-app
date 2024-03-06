@@ -9,7 +9,7 @@ gunicorn==21.2.0
 importlib_resources==6.1.2
 kiwisolver==1.4.5
 matplotlib==3.7.5
-numpy==1.19.5
+numpy==1.19.5 
 packaging==23.2
 pandas==2.0.3
 pillow==10.2.0

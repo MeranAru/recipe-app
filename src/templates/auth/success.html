@@ -2,9 +2,11 @@
 <html lang="en">
 
 <head>
-    <title>BURGER HOME | Logout</title>
+    <title>BURGER | Logout</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {% load static %}
+    <!-- CSS CUSTOM -->
+    <link rel='stylesheet' type='text/css' href="{% static 'recipes/css/styles.css' %}">
     <style type="text/css">
         a {
         margin-left: 10px;
@@ -12,17 +14,17 @@
     </style>
 </head>
 
-    <body class="body">
-        <div class="auth_modal" style="width: 25%;">
-            <h2 style="border: 2px solid green; 
-                        border-radius: 10px;
-                        padding: 10px; 
-                        background-color: rgb(161, 241, 161);
-                        color: rgb(14, 59, 14)">Successfully Logged Out!</h2>
-            <br>
-            <a class="login_btn" href="{%url 'login' %}"> Login </a>
-            <a class="back-home_btn" href="/home"> Home </a>
-        </div>
-    </body>
+<body class="body">
+    <div class="auth_modal" style="width: 25%;">
+        <h2 style="border: 2px solid green; 
+                    border-radius: 10px;
+                    padding: 10px; 
+                    background-color: rgb(161, 241, 161);
+                    color: rgb(14, 59, 14)">Logged Out Successfully, Hope to See you Again!</h2>
+        <br>
+        <a class="login_btn" href="{%url 'login' %}"> Login </a>
+        <a class="back-home_btn" href="/home"> Home </a>
+    </div>
+</body>
 
 </html>

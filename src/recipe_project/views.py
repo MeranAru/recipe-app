@@ -27,7 +27,7 @@ def login_view(request):
             # use Django authenticate function to validate the user
             user = authenticate(username=username, password=password)
             if user is not None:  # if user is authenticated
-                # then use pre-defined Django function to login
+               # then use pre-defined Django function to login
                 login(request, user)
                 # & send the user to desired page
                 return redirect('recipes:list')

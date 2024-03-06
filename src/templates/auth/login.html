@@ -1,18 +1,42 @@
-<h1>Login</h1>          {% comment %} print heading {% endcomment %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% comment %} check for error message {% endcomment %}
-{% if error_message %}
-   {{error_message}}
-{% endif %}
+<head>
+   <title>RecipeApp | Login</title>
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   {% load static %}
+   <!-- CSS CUSTOM -->
+   <link rel='stylesheet' type='text/css' href="{% static 'recipes/css/styles.css' %}">
+</head>
 
-{% comment %} print form {% endcomment %}
-<form action="" method="POST" >
-   {% comment %} add Django security token {% endcomment %}
-   {% csrf_token %}   
+<body class="body">
+   <div class="auth_modal">
+      <h1>Login</h1> {% comment %} print heading {% endcomment %}
 
-   {% comment %} print form received from view  {% endcomment %}
-   {{form}}           
+      {% comment %} check for error message {% endcomment %}
+      {% if error_message %}
+      <div id="error_login">
+         {{error_message}}
+      </div>
+      {% endif %}
 
-   {% comment %} add button {% endcomment %}
-   <button type="submit" >Login</button>
-</form>
+      {% comment %} print form {% endcomment %}
+      <form action="" method="POST">
+         {% comment %} add Django security token {% endcomment %}
+         {% csrf_token %}
+
+         {% comment %} print form received from view {% endcomment %}
+         <div class="form_input">
+         {{form}}
+         </div>
+
+         {% comment %} add button {% endcomment %}
+         <br>
+         <br>
+         <button type="submit" class="login_btn">Login</button>
+         <button style="border: 0px;"><a class="back-home_btn" href="/home"> Cancel </a></button>
+      </form>
+   </div>
+</body>
+
+</html>

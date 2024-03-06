@@ -15,15 +15,13 @@ class Recipe(models.Model):
 
     def calculate_difficulty(self):
         ingredients = self.ingredients.split(', ')
-        if self.cooking_time < 10 and len(ingredients) < 7:
+        if self.cooking_time < 10 and len(ingredients) < 4:
             difficulty = 'Easy'
-        elif self.cooking_time < 10 and len(ingredients) >= 7:
+        elif self.cooking_time < 10 and len(ingredients) >= 4:
+            difficulty = 'Medium'
+        elif self.cooking_time >= 10 and len(ingredients) < 4:
             difficulty = 'Intermediate'
-        elif self.cooking_time >= 10 and len(ingredients) <= 2:
-            difficulty = 'Easy'  # Assign 'Easy' for cooking time 10 and ingredient count 2
-        elif self.cooking_time >= 10 and len(ingredients) <= 7:
-            difficulty = 'Intermediate'
-        else:
+        elif self.cooking_time >= 10 and len(ingredients) >= 4:
             difficulty = 'Hard'
         return difficulty
     

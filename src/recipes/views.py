@@ -7,13 +7,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from .forms import RecipesSearchForm
 import pandas as pd
-from .utils import get_recipename_from_id, get_chart
+from .utils import get_chart
 
 
 
 # Create your views here.
 
-def welcome(request):
+def home(request):
     return render(request, 'recipes/recipes_home.html')
 
 # Create your views here.
@@ -30,50 +30,62 @@ class RecipeDetailView(LoginRequiredMixin, DetailView):                       #c
 def records(request):
     # create an instance of RecipesSearchForm that you defined in recipes/forms.py
     form = RecipesSearchForm(request.POST or None)
-    recipes_df = None  # initialize dataframe to None
+    recipe_df = None  # initialize dataframe to None
+    recipe_diff = None
     chart = None
-
-# check if the button is clicked
+    qs = None
+    # check if the button is clicked
     if request.method == 'POST':
-        # read recipe_title and chart_type
-        recipe_title = request.POST.get('recipe_title')
-        chart_type = request.POST.get('chart_type')
+        recipe_diff = request.POST.get('recipe_diff')  # read recipe_name
+        chart_type = request.POST.get('chart_type')  # read recipe chart type
 
-        qs = Recipe.objects.filter(name=recipe_title)
+        recipe_diff_data = {"#1": "Easy", "#2": "Medium",
+                            "#3": "Intermediate", "#4": "Hard"}
+        recipe_diff = recipe_diff_data[recipe_diff]
+
+        # if recipe_diff == '#1':
+        #     recipe_diff = 'Easy'
+        # if recipe_diff == '#2':
+        #     recipe_diff = 'Medium'
+        # if recipe_diff == '#3':
+        #     recipe_diff = 'Intermediate'
+        # if recipe_diff == '#4':
+        #     recipe_diff = 'Hard'
+
+        qs = Recipe.objects.all()  # apply filter to extract data
+        id_searched = []
+        for obj in qs:
+            diff = obj.calculate_difficulty()
+            if diff == recipe_diff:
+                id_searched.append(obj.id)
+
+        qs = qs.filter(id__in=id_searched)
+
         if qs:  # if data found
             # convert the queryset values to pandas dataframe
-            recipes_df = pd.DataFrame(qs.values('id', 'cooking_time', 'difficulty', 'ingredients', 'name', 'pic'))
-            recipes_df['id'] = recipes_df['id'].apply(get_recipename_from_id)
-            chart = get_chart(chart_type, recipes_df, labels=recipes_df['name'].values)
-            recipes_df = recipes_df.to_html()
+            recipe_df = pd.DataFrame(qs.values())
+            chart = get_chart(chart_type, recipe_df,
+                            labels=recipe_df['name'].values)
 
+            # convert the dataframe to HTML
+            recipe_df = recipe_df.to_html()
 
-        '''
-        print('Exploring querysets:')
-        print('Case 1: Output of Recipe.objects.all()')
-        qs = Recipe.objects.all()
-        print(qs)
+            for item in qs.values():
+                item_id = item["id"]
+                item_name = item["name"]
+                recipe_df = recipe_df.replace(
+                    f"<td>{item_name}</td>",
+                    f'<td><a href = "/recipes/list/{item_id}">{item_name}</td>'
+                )
 
-        print('Case 2: Output of Recipe.objects.filter(recipe_name=recipe_title)')
-        print(qs)
-
-        print('Case 3: Output of qs.values')
-        print(qs.values())
-
-        print('Case 4: Output of qs.values_list()')
-        print(qs.values_list())
-
-        print('Case 5: Output of Recipe.objects.get(id=1)')
-        obj = Recipe.objects.get(id=1)
-        print(obj)
-        '''
-
-    #pack up data to be sent to template in the context dictionary
+    # print(recipe_df)
+    # pack up data to be sent to template in the context dictionary
     context = {
         'form': form,
-        'recipes_df': recipes_df,  # recipes_df initialized here
-        'chart': chart
+        'recipe_df': recipe_df,
+        'recipe_diff': recipe_diff,
+        'chart': chart,
+        'qs': qs,
     }
-
-    #load the recipes/record.html page using the data that you just prepared
+    # load the recipes/records.html page using the data that you just prepared
     return render(request, 'recipes/records.html', context)

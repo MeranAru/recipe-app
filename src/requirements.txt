@@ -8,8 +8,8 @@ fonttools==4.49.0
 gunicorn==21.2.0
 importlib_resources==6.1.2
 kiwisolver==1.4.5
-matplotlib==3.7.5
-numpy==1.19.5 
+matplotlib
+numpy
 packaging==23.2
 pandas==2.0.3
 pillow==10.2.0
@@ -19,6 +19,7 @@ python-dateutil==2.9.0.post0
 pytz==2024.1
 six==1.16.0
 sqlparse==0.4.4
+setuptools==60.9.3
 typing_extensions==4.10.0
 tzdata==2024.1
 whitenoise==6.6.0

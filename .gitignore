@@ -265,3 +265,6 @@ pyrightconfig.json
 
 # Database
 *.sqlite3
+
+.DS_Store
+*.pyc

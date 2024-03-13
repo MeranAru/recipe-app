@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     #Recipes Project related apps
     'recipes',
     'users',
+    # Add 'storages' to your INSTALLED_APP
+    'storages',  
 ]
 
 MIDDLEWARE = [
@@ -122,16 +124,28 @@ LOGIN_URL='/login/'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'recipe/static/'
+STATIC_URL = '/recipe/static/'
 STATICFILES_DIRS=[
     BASE_DIR / 'static'
 ]
 
+AWS_ACCESS_KEY_ID = 'AKIA5BUSAIWN436WTP4I'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'pythonbucket3'
+AWS_S3_CUSTOM_DOMAIN = f'pythonbucket3.s3.amazonaws.com'
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+AWS_LOCATION = 'media'
+AWS_DEFAULT_ACL = 'public-read'
+AWS_S3_FILE_OVERWRITE = False
+AWS_QUERYSTRING_AUTH = False
+
 # The absolute path to the directory where collectstatic will collect static files for deployment.
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT= BASE_DIR / 'media'
+MEDIA_URL = f'https://pythonbucket3.s3.amazonaws.com/media/'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
